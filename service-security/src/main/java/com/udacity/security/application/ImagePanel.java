@@ -1,9 +1,8 @@
 package com.udacity.security.application;
 
-import com.udacity.security.data.AlarmStatus;
-import com.udacity.security.SecurityService;
 import com.udacity.image.StyleService;
 import com.udacity.security.SecurityService;
+import com.udacity.security.data.AlarmStatus;
 import net.miginfocom.swing.MigLayout;
 
 import javax.imageio.ImageIO;
