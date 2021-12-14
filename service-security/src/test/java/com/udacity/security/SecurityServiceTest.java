@@ -7,14 +7,18 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
@@ -33,7 +37,7 @@ public class SecurityServiceTest {
     @BeforeEach
     void settingUp() {
         securityService = new SecurityService(securityRepository, imageServiceHelper);
-        sensor = new Sensor(UUID.randomUUID().toString(), SensorType.DOOR);
+        sensor = new Sensor("sensorForTest", SensorType.DOOR);
     }
 
     //Application Requirements - 1
@@ -54,6 +58,34 @@ public class SecurityServiceTest {
         verify(securityRepository, atMost(2)).setAlarmStatus(AlarmStatus.ALARM);
     }
 
+    //Application Requirements - 3
+    @Test
+    public void alarmStatusChanging_ifPendingAlarmAndSensorAreInactive_alarmStatusNoAlarm () {
+//        when(securityRepository.getSensors()).thenReturn(getTestSensors(3, false));
+//        when(securityService.getAlarmStatus()).thenReturn(AlarmStatus.PENDING_ALARM);
+////        securityService.changeSensorActivationStatus(sensor, false);
+//        ArgumentCaptor<AlarmStatus> argumentCaptor = ArgumentCaptor.forClass(AlarmStatus.class);
+//        verify(securityRepository, atMostOnce()).setAlarmStatus(argumentCaptor.capture());
+//        assertEquals(argumentCaptor.getValue(), AlarmStatus.NO_ALARM);
+////        verify(securityRepository, atLeast(1)).setAlarmStatus(AlarmStatus.NO_ALARM);
 
+        when(securityRepository.getAlarmStatus()).thenReturn(AlarmStatus.PENDING_ALARM);
+        sensor.setActive(false);
+        securityService.setAlarmStatus(AlarmStatus.NO_ALARM);
+        verify(securityRepository, Mockito.times(1)).setAlarmStatus(any(AlarmStatus.class));
+
+    }
+
+
+
+
+    private Set<Sensor> getTestSensors (int count, boolean isActive){
+        Set<Sensor> testSensorsScope = new HashSet<>();
+        for (int i = 0; i <= count; i++){
+            testSensorsScope.add(new Sensor("newSensor", SensorType.DOOR));
+        }
+        testSensorsScope.forEach(it -> it.setActive(isActive));
+        return testSensorsScope;
+    }
 
 }
