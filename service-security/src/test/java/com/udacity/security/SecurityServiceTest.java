@@ -3,6 +3,7 @@ package com.udacity.security;
 import com.udacity.image.ImageServiceHelper;
 import com.udacity.security.data.*;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
@@ -44,4 +45,15 @@ public class SecurityServiceTest {
         securityService.changeSensorActivationStatus(sensor, true);
         verify(securityRepository, Mockito.times(1)).setAlarmStatus(AlarmStatus.PENDING_ALARM);
     }
+
+    //Application Requirements - 2
+    @Test
+    public void alarmStatusChanging_ifAlarmIsArmedAndSensorActivatedAndAlarmIsPending_alarmStatusAlarm () {
+        when(securityService.getAlarmStatus()).thenReturn(AlarmStatus.PENDING_ALARM);
+        securityService.changeSensorActivationStatus(sensor, true);
+        verify(securityRepository, atMost(2)).setAlarmStatus(AlarmStatus.ALARM);
+    }
+
+
+
 }
