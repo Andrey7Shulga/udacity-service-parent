@@ -138,6 +138,14 @@ public class SecurityServiceTest {
         assertAll(list);
     }
 
+    //Application Requirements - 11
+    @Test
+    public void alarmStatusChanging_CatIsDetectedAndSystem_changeToAlarm () {
+        when(imageServiceHelper.imageContainsCat(any(), anyFloat())).thenReturn(true);
+        when(securityRepository.getArmingStatus()).thenReturn(ArmingStatus.ARMED_HOME);
+        securityService.processImage(mock(BufferedImage.class));
+        verify(securityRepository, atLeastOnce()).setAlarmStatus(AlarmStatus.ALARM);
+    }
 
 
 
@@ -146,7 +154,7 @@ public class SecurityServiceTest {
         for (int i = 0; i <= count; i++){
             testSensorsScope.add(new Sensor("newSensor", SensorType.DOOR));
         }
-        testSensorsScope.forEach(it -> it.setActive(isActive));
+        testSensorsScope.forEach(s -> s.setActive(isActive));
         return testSensorsScope;
     }
 
