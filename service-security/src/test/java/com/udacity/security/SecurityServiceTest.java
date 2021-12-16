@@ -125,15 +125,14 @@ public class SecurityServiceTest {
         verify(securityRepository, atMostOnce()).setAlarmStatus(AlarmStatus.NO_ALARM);
     }
 
-    //Application Requirements - 10 -- TO FIX BUGS!!
+    //Application Requirements - 10
     @ParameterizedTest
     @EnumSource(value = ArmingStatus.class, names = {"ARMED_AWAY", "ARMED_HOME"})
     public void sensorsState_ifSystemIsArmed_resetAllSensorsToInactive (ArmingStatus armingStatus) {
-        Set<Sensor> testSensors = getTestSensors(5, true);
+        Set<Sensor> testSensors = getTestSensors(4, true);
         List<Executable> list = new ArrayList<>();
-
         when(securityRepository.getSensors()).thenReturn(testSensors);
-        when(securityService.getArmingStatus()).thenReturn(armingStatus);
+        securityService.setArmingStatus(armingStatus);
         testSensors.forEach(s -> list.add(() -> assertEquals(s.getActive(), false)));
         assertAll(list);
     }
