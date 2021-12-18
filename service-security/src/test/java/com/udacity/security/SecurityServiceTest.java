@@ -44,8 +44,9 @@ public class SecurityServiceTest {
     @DisplayName("Application Requirements - 1")
     @EnumSource(value = ArmingStatus.class, names = {"ARMED_HOME", "ARMED_AWAY"})
     public void alarmStatusChanging_ifAlarmIsArmedAndSensorActivated_alarmStatusPending (ArmingStatus status) {
+        when(securityRepository.getSensors()).thenReturn(getTestSensors(1, true));
         when(securityService.getArmingStatus()).thenReturn(status);
-        when(securityRepository.getAlarmStatus()).thenReturn(AlarmStatus.NO_ALARM);
+        when(securityService.getAlarmStatus()).thenReturn(AlarmStatus.NO_ALARM);
         securityService.changeSensorActivationStatus(sensor, true);
         verify(securityRepository, Mockito.times(1)).setAlarmStatus(AlarmStatus.PENDING_ALARM);
     }
@@ -62,9 +63,8 @@ public class SecurityServiceTest {
     @DisplayName("Application Requirements - 3")
     public void alarmStatusChanging_ifPendingAlarmAndSensorAreInactive_alarmStatusNoAlarm () {
         when(securityRepository.getSensors()).thenReturn(getTestSensors(3, false));
-        when(securityRepository.getAlarmStatus()).thenReturn(AlarmStatus.PENDING_ALARM);
-        securityService.setAlarmStatus(AlarmStatus.NO_ALARM);
-        verify(securityRepository, atLeast(1)).setAlarmStatus(AlarmStatus.NO_ALARM);
+        securityService.setAlarmStatus(AlarmStatus.PENDING_ALARM);
+        verify(securityRepository, atLeastOnce()).setAlarmStatus(AlarmStatus.NO_ALARM);
     }
 
     @Test
@@ -106,7 +106,7 @@ public class SecurityServiceTest {
         when(securityRepository.getArmingStatus()).thenReturn(ArmingStatus.ARMED_HOME);
         when(imageServiceHelper.imageContainsCat(any(), anyFloat())).thenReturn(true);
         securityService.processImage(mock(BufferedImage.class));
-        verify(securityRepository, atMostOnce()).setAlarmStatus(AlarmStatus.ALARM);
+        verify(securityRepository, times(1)).setAlarmStatus(AlarmStatus.ALARM);
     }
 
     @Test
