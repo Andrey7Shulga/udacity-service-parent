@@ -14,6 +14,14 @@
   <!-- FIXME change it to the project's website -->
   <url>http://www.example.com</url>
 
+  <properties>
+    <maven.compiler.source>15</maven.compiler.source>
+    <maven.compiler.target>15</maven.compiler.target>
+    <!-- plugins -->
+    <maven.assembly.plugin.version>3.3.0</maven.assembly.plugin.version>
+    <!-- dependencies -->
+    <dep.version>1.0-SNAPSHOT</dep.version>
+  </properties>
 
   <dependencies>
     <dependency>
@@ -38,5 +46,36 @@
       <version>3.7.4</version>
     </dependency>
   </dependencies>
+
+
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <version>3.3.0</version>
+        <executions>
+          <execution>
+            <id>make-assembly</id> <!-- this is used for inheritance merges -->
+            <phase>package</phase> <!-- bind to the packaging phase -->
+            <goals>
+              <goal>single</goal>
+            </goals>
+            <configuration>
+              <descriptorRefs>
+                <descriptorRef>jar-with-dependencies</descriptorRef>
+              </descriptorRefs>
+              <archive>
+                <manifest>
+                  <mainClass>com.udacity.security.application.CatpointApp</mainClass>
+                </manifest>
+              </archive>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
 
 </project>
