@@ -31,9 +31,9 @@ public class SecurityServiceTest {
     private SecurityService securityService;
 
     @Mock
-    SecurityRepository securityRepository;
+    private SecurityRepository securityRepository;
     @Mock
-    FakeImageService imageServiceHelper;
+    private FakeImageService imageServiceHelper;
 
     @BeforeEach
     void settingUp() {
@@ -71,7 +71,6 @@ public class SecurityServiceTest {
         securityService.deactivateSensor(sensor);
         verify(securityRepository, atLeastOnce()).setAlarmStatus(AlarmStatus.NO_ALARM);
     }
-
 
     @ParameterizedTest
     @ValueSource(booleans = {true, false})
@@ -150,7 +149,6 @@ public class SecurityServiceTest {
         securityService.processImage(mock(BufferedImage.class));
         verify(securityRepository, atLeastOnce()).setAlarmStatus(AlarmStatus.ALARM);
     }
-
 
     private Set<Sensor> getTestSensors (int count, boolean isActive){
         Set<Sensor> testSensorsScope = new HashSet<>();
