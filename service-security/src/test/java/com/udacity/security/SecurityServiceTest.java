@@ -45,7 +45,6 @@ public class SecurityServiceTest {
     @DisplayName("Application Requirements - 1")
     @EnumSource(value = ArmingStatus.class, names = {"ARMED_HOME", "ARMED_AWAY"})
     public void alarmStatusChanging_ifAlarmIsArmedAndSensorActivated_alarmStatusPending (ArmingStatus status) {
-        when(securityRepository.getSensors()).thenReturn(getTestSensors(1, true));
         when(securityService.getArmingStatus()).thenReturn(status);
         when(securityService.getAlarmStatus()).thenReturn(AlarmStatus.NO_ALARM);
         securityService.changeSensorActivationStatus(sensor, true);
@@ -117,7 +116,7 @@ public class SecurityServiceTest {
     @Test
     @DisplayName("Application Requirements - 8")
     public void alarmStatusChanging_ifSensorIsInactiveAndCatIsNotDetected_changeToNoAlarm () {
-        when(securityRepository.getSensors()).thenReturn(getTestSensors(2, false));
+        securityService.changeSensorActivationStatus(sensor, false);
         when(imageServiceHelper.imageContainsCat(any(), anyFloat())).thenReturn(false);
         securityService.processImage(mock(BufferedImage.class));
         verify(securityRepository, times(1)).setAlarmStatus(AlarmStatus.NO_ALARM);

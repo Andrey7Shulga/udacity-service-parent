@@ -97,12 +97,8 @@ public class SecurityService {
      * @param status
      */
     public void setAlarmStatus(AlarmStatus status) {
-        if (isAllTheSensorsHaveTheSameState(false) && status == AlarmStatus.PENDING_ALARM) {
-            securityRepository.setAlarmStatus(AlarmStatus.NO_ALARM);
-        } else {
-            securityRepository.setAlarmStatus(status);
-        }
-        statusListeners.forEach(sl -> sl.notify(status));
+        securityRepository.setAlarmStatus(status);
+        statusListeners.forEach (sl -> sl.notify(status));
     }
 
     /**
@@ -149,19 +145,13 @@ public class SecurityService {
         securityRepository.updateSensor(sensor);
     }
 
-    public void deactivateSensor (Sensor sensor) {
+    public void deactivateSensor(Sensor sensor) {
         if (this.getArmingStatus() == ArmingStatus.DISARMED && this.getAlarmStatus() == AlarmStatus.ALARM
             ||
             !sensor.getActive() && this.getAlarmStatus() == AlarmStatus.PENDING_ALARM) {
             handleSensorDeactivated();
         }
         securityRepository.updateSensor(sensor);
-    }
-
-
-    private boolean isAllTheSensorsHaveTheSameState(boolean isStateActive) {
-        return getSensors().stream()
-                .allMatch(sensor -> sensor.getActive()==isStateActive);
     }
 
     /**
