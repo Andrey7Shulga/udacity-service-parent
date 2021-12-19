@@ -138,16 +138,26 @@ public class SecurityService {
      * @param active
      */
     public void changeSensorActivationStatus(Sensor sensor, Boolean active) {
-        boolean switchOn = !sensor.getActive() && active;
-        boolean switchOff = sensor.getActive() && !active;
-
-        if (switchOn || switchOff) {
-            if (switchOn) {handleSensorActivated();}
-            else {handleSensorDeactivated();}
+        if (getAlarmStatus() != AlarmStatus.ALARM) {
+            if (active) {
+                handleSensorActivated();
+            } else if (sensor.getActive()) {
+                handleSensorDeactivated();
+            }
         }
         sensor.setActive(active);
         securityRepository.updateSensor(sensor);
     }
+
+    public void deactivateSensor (Sensor sensor) {
+        if (this.getArmingStatus() == ArmingStatus.DISARMED && this.getAlarmStatus() == AlarmStatus.ALARM
+            ||
+            !sensor.getActive() && this.getAlarmStatus() == AlarmStatus.PENDING_ALARM) {
+            handleSensorDeactivated();
+        }
+        securityRepository.updateSensor(sensor);
+    }
+
 
     private boolean isAllTheSensorsHaveTheSameState(boolean isStateActive) {
         return getSensors().stream()
