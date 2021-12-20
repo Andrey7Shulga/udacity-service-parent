@@ -1,6 +1,6 @@
-package com.udacity.security;
+package com.udacity.security.service;
 
-import com.udacity.image.ImageServiceHelper;
+import com.udacity.image.service.ImageServiceHelper;
 import com.udacity.security.application.StatusListener;
 import com.udacity.security.data.AlarmStatus;
 import com.udacity.security.data.ArmingStatus;
