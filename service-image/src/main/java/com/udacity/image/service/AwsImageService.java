@@ -1,4 +1,4 @@
-package com.udacity.image;
+package com.udacity.image.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

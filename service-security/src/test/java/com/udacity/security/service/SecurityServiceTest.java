@@ -1,7 +1,8 @@
-package com.udacity.security;
+package com.udacity.security.service;
 
-import com.udacity.image.FakeImageService;
+import com.udacity.image.service.FakeImageService;
 import com.udacity.security.data.*;
+import com.udacity.security.service.SecurityService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
