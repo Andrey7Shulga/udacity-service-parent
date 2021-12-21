@@ -57,7 +57,7 @@ public class SecurityService {
                         sensor.getSensorId(), sensor.getActive()));
 
         System.out.println("Changing sensors and alarm statuses\n");
-        sensors.forEach(sensor -> changeSensorActivationStatus(sensor, active));
+        sensors.parallelStream().forEachOrdered(sensor -> changeSensorActivationStatus(sensor, active));
 
         sensors.forEach(sensor ->
                 System.out.printf("After changing Sensor(#ID-%s) is active - %s%n",
