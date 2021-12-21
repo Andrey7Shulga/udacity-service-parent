@@ -1,5 +1,6 @@
 package com.udacity.security.application;
 
+import com.udacity.security.data.AlarmStatus;
 import com.udacity.security.data.Sensor;
 import com.udacity.security.data.SensorType;
 import com.udacity.security.service.SecurityService;
@@ -12,7 +13,7 @@ import javax.swing.*;
  * Panel that allows users to add sensors to their system. Sensors may be
  * manually set to "active" and "inactive" to test the system.
  */
-public class SensorPanel extends JPanel {
+public class SensorPanel extends JPanel implements StatusListener{
 
     private SecurityService securityService;
 
@@ -59,6 +60,11 @@ public class SensorPanel extends JPanel {
         p.add(newSensorTypeDropdown, "wrap");
         p.add(addNewSensorButton, "span 3");
         return p;
+    }
+
+    @Override
+    public void sensorStatusChanged() {
+        updateSensorList(sensorListPanel);
     }
 
     /**
@@ -117,4 +123,10 @@ public class SensorPanel extends JPanel {
         securityService.removeSensor(sensor);
         updateSensorList(sensorListPanel);
     }
+
+    @Override
+    public void notify(AlarmStatus status) {}
+
+    @Override
+    public void catDetected(boolean catDetected) {}
 }
