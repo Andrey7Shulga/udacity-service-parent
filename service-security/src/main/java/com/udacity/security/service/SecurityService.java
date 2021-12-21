@@ -149,9 +149,9 @@ public class SecurityService {
         AlarmStatus alarm = this.getAlarmStatus();
         ArmingStatus arming = this.getArmingStatus();
 
-        if (!sensor.getActive() && alarm == AlarmStatus.PENDING_ALARM) {
-            handleSensorDeactivated();
-        } else if (arming == ArmingStatus.DISARMED && alarm == AlarmStatus.ALARM) {
+        if (!sensor.getActive() && alarm == AlarmStatus.PENDING_ALARM
+                ||
+            arming == ArmingStatus.DISARMED && alarm == AlarmStatus.ALARM) {
             handleSensorDeactivated();
         }
         securityRepository.updateSensor(sensor);
