@@ -44,18 +44,10 @@ public class SecurityService {
         if(armingStatus == ArmingStatus.DISARMED) {
             setAlarmStatus(AlarmStatus.NO_ALARM);
         } else {
-//            ConcurrentSkipListSet<Sensor> sensors = new ConcurrentSkipListSet<>(getSensors());
-//            sensors.forEach(sensor -> changeSensorActivationStatus(sensor, false));
                 changeSensorStatus(getSensors(), false);
         }
         securityRepository.setArmingStatus(armingStatus);
         statusListeners.forEach(StatusListener::sensorStatusChanged);
-    }
-
-
-    boolean isSystemArmed(ArmingStatus armingStatus){
-        return List.of(ArmingStatus.ARMED_HOME, ArmingStatus.ARMED_AWAY)
-                .contains(armingStatus);
     }
 
     private void changeSensorStatus(Set<Sensor> sensors, boolean active) {
@@ -95,13 +87,8 @@ public class SecurityService {
      * Register the StatusListener for alarm system updates from within the SecurityService.
      * @param statusListener
      */
-    public void addStatusListener(StatusListener statusListener) {
-        statusListeners.add(statusListener);
-    }
-
-    public void removeStatusListener(StatusListener statusListener) {
-        statusListeners.remove(statusListener);
-    }
+    public void addStatusListener(StatusListener statusListener) {statusListeners.add(statusListener);}
+    public void removeStatusListener(StatusListener statusListener) {statusListeners.remove(statusListener);}
 
     /**
      * Change the alarm status of the system and notify all listeners.

@@ -31,6 +31,7 @@ public class SensorPanel extends JPanel implements StatusListener{
         super();
         setLayout(new MigLayout());
         this.securityService = securityService;
+        securityService.addStatusListener(this);
 
         panelLabel.setFont(StyleService.HEADING_FONT);
         addNewSensorButton.addActionListener(e ->
@@ -66,6 +67,13 @@ public class SensorPanel extends JPanel implements StatusListener{
     public void sensorStatusChanged() {
         updateSensorList(sensorListPanel);
     }
+
+    @Override
+    public void notify(AlarmStatus status) {}
+
+    @Override
+    public void catDetected(boolean catDetected) {}
+
 
     /**
      * Requests the current list of sensors and updates the provided panel to display them. Sensors
@@ -123,10 +131,4 @@ public class SensorPanel extends JPanel implements StatusListener{
         securityService.removeSensor(sensor);
         updateSensorList(sensorListPanel);
     }
-
-    @Override
-    public void notify(AlarmStatus status) {}
-
-    @Override
-    public void catDetected(boolean catDetected) {}
 }
