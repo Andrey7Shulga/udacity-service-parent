@@ -148,8 +148,19 @@ public class SecurityServiceTest {
         when(imageServiceHelper.imageContainsCat(any(), anyFloat())).thenReturn(true);
         when(securityRepository.getArmingStatus()).thenReturn(ArmingStatus.ARMED_HOME);
         securityService.processImage(mock(BufferedImage.class));
+        securityService.setArmingStatus(ArmingStatus.ARMED_HOME);
         verify(securityRepository, atLeastOnce()).setAlarmStatus(AlarmStatus.ALARM);
     }
+
+    @Test
+    @DisplayName("Additional test - 01")
+    void alarmStatusChanging_ifSystemDisarmedAndAlarmState_changeToPending() {
+        when(securityRepository.getAlarmStatus()).thenReturn(AlarmStatus.ALARM);
+        when(securityRepository.getArmingStatus()).thenReturn(ArmingStatus.DISARMED);
+        securityService.deactivateSensor(sensor);
+        verify(securityRepository, times(1)).setAlarmStatus(AlarmStatus.PENDING_ALARM);
+    }
+
 
     private Set<Sensor> getTestSensors (int count, boolean isActive){
         Set<Sensor> testSensorsScope = new HashSet<>();
