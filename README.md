@@ -1,7 +1,7 @@
 # UdaSecurity - the third practical project of the program 
 program link - https://www.udacity.com/course/java-programming-nanodegree--nd079
 
-- the first practical project: 
+- the first practical project: https://github.com/Andrey7Shulga/hotelReservationSystem
 - the second practical project: https://github.com/Andrey7Shulga/webcrawler
 
 Your company, Udasecurity, has created a home security application. This application tracks the status of sensors, monitors camera input, and changes the alarm state of the system based on inputs. Users can arm the system for when they’re home or away as well as disarm the system.
