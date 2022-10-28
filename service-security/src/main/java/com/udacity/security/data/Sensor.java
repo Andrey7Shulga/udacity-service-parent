@@ -1,6 +1,5 @@
 package com.udacity.security.data;
 
-
 import com.google.common.collect.ComparisonChain;
 
 import java.util.Objects;
